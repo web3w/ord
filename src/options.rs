@@ -94,6 +94,7 @@ impl Options {
 
   pub(crate) fn rpc_url(&self) -> String {
     if let Some(rpc_url) = &self.rpc_url {
+      println!("-----{rpc_url}");
       format!("{rpc_url}/wallet/{}", self.wallet)
     } else {
       format!(
@@ -220,7 +221,7 @@ impl Options {
         cookie_file.display()
       );
     }
-
+    println!("auth -----{rpc_url}");
     let client = Client::new(&rpc_url, auth)
       .with_context(|| format!("failed to connect to Bitcoin Core RPC at {rpc_url}"))?;
 
@@ -290,15 +291,15 @@ mod tests {
     assert_eq!(
       Arguments::try_parse_from([
         "ord",
-        "--rpc-url=127.0.0.1:1234",
-        "--chain=signet",
+        "--rpc-url=test:testpwd@10.58.204.103:8443",
+        "--chain=regtest",
         "index",
         "update"
       ])
       .unwrap()
       .options
       .rpc_url(),
-      "127.0.0.1:1234/wallet/ord"
+      "test:testpwd@10.58.204.103:8443/wallet/ord"
     );
   }
 
@@ -539,6 +540,7 @@ mod tests {
     let cookie_file = tempdir.path().join(".cookie");
     fs::write(&cookie_file, "username:password").unwrap();
 
+    println!("{} {}", cookie_file.to_str().unwrap(),rpc_server.url()); 
     let options = Options::try_parse_from([
       "ord",
       "--cookie-file",
@@ -801,6 +803,7 @@ mod tests {
     assert_eq!(arguments.options.db_cache_size, Some(16000000000));
   }
 
+  // #TODO Test R
   #[test]
   fn index_runes_only_returns_true_if_index_runes_flag_is_passed_and_not_on_mainnnet() {
     assert!(Arguments::try_parse_from([

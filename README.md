@@ -1,6 +1,14 @@
 `ord`
 =====
 
+ curl --data-binary '{"jsonrpc":"1.0","id":"1","method":"getblockcount","params":[]}' http://test:testpwd@10.58.204.103:8443
+
+ --bitcoin-rpc-user test --bitcoin-rpc-pass testpwd  --rpc-url --rpc-url=test:testpwd@10.58.204.103:8443 -r server
+
+  cargo run -r --cookie-file /Users/liyu/Github/ord/ord/src --rpc-url=http://10.58.204.103:8443 server
+
+  /root/bin/ord -r server
+
 `ord` is an index, block explorer, and command-line wallet. It is experimental
 software with no warranty. See [LICENSE](LICENSE) for more details.
 
